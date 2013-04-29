@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,6 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ *
+ *
+ * @package enrol
+ * @category eledia_generate_multikeys
+ * @copyright 2013 eLeDia GmbH {@link http://www.eledia.de}
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once("$CFG->libdir/formslib.php");
@@ -28,14 +36,10 @@ class enrol_elediamultikeys_enrol_form extends moodleform {
         $this->instance = $instance;
         $plugin = enrol_get_plugin('elediamultikeys');
 
-//        if ($instance->password) {
-            $heading = $plugin->get_instance_name($instance);
-            $mform->addElement('header', 'elediamultikeysheader', $heading);
-            $mform->addElement('passwordunmask', 'enrolpassword', get_string('password', 'enrol_elediamultikeys'), array('id' => 'enrolpassword_'.$instance->id));
-            $mform->addRule('enrolpassword', get_string('missing_enrol_key', 'enrol_elediamultikeys'), 'required', null, 'server');
-//        } else {
-//            // nothing?
-//        }
+        $heading = $plugin->get_instance_name($instance);
+        $mform->addElement('header', 'elediamultikeysheader', $heading);
+        $mform->addElement('passwordunmask', 'enrolpassword', get_string('password', 'enrol_elediamultikeys'), array('id' => 'enrolpassword_'.$instance->id));
+        $mform->addRule('enrolpassword', get_string('missing_enrol_key', 'enrol_elediamultikeys'), 'required', null, 'server');
 
         $this->add_action_buttons(false, get_string('enrolme', 'enrol_elediamultikeys'));
 
@@ -49,7 +53,7 @@ class enrol_elediamultikeys_enrol_form extends moodleform {
     }
 
     public function validation($data, $files) {
-        global $DB, $CFG;
+        global $DB;
 
         $errors = parent::validation($data, $files);
         $instance = $this->instance;
@@ -69,7 +73,7 @@ class enrol_elediamultikeys_enrol_form extends moodleform {
                         }
                     }
                     if (!$found) {
-                        // we can not hint because there are probably multiple passwords
+                        // We can not hint because there are probably multiple passwords.
                         $errors['enrolpassword'] = get_string('passwordinvalid', 'enrol_elediamultikeys');
                     }
 

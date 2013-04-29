@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,6 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ *
+ *
+ * @package enrol
+ * @category eledia_generate_multikeys
+ * @copyright 2013 eLeDia GmbH {@link http://www.eledia.de}
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 class enrol_elediamultikeys_plugin extends enrol_plugin {
 
@@ -72,17 +80,17 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
     }
 
     public function roles_protected() {
-        // users may tweak the roles later
+        // Users may tweak the roles later.
         return false;
     }
 
     public function allow_unenrol(stdClass $instance) {
-        // users with unenrol cap may unenrol other users manually manually
+        // Users with unenrol cap may unenrol other users manually manually.
         return true;
     }
 
     public function allow_manage(stdClass $instance) {
-        // users with manage cap may tweak period and status
+        // Users with manage cap may tweak period and status.
         return true;
     }
 
@@ -157,29 +165,26 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
         global $CFG, $OUTPUT, $SESSION, $USER, $DB;
 
         if (isguestuser()) {
-            // can not enrol guest!!
+            // Can not enrol guest!!
             return null;
         }
         if ($DB->record_exists('user_enrolments', array('userid'=>$USER->id, 'enrolid'=>$instance->id))) {
-            //TODO: maybe we should tell them they are already enrolled, but can not access the course
             return null;
         }
 
         if ($instance->enrolstartdate != 0 and $instance->enrolstartdate < time()) {
-            //TODO: inform that we can not enrol yet
             return null;
         }
 
         if ($instance->enrolenddate != 0 and $instance->enrolenddate > time()) {
-            //TODO: inform that enrolment is not possible any more
             return null;
         }
 
         if ($instance->customint3 > 0) {
-            // max enrol limit specified
+            // Max enrol limit specified.
             $count = $DB->count_records('user_enrolments', array('enrolid'=>$instance->id));
             if ($count >= $instance->customint3) {
-                // bad luck, no more self enrolments here
+                // Bad luck, no more self enrolments here.
                 return $OUTPUT->notification(get_string('maxenrolledreached', 'enrol_elediamultikeys'));
             }
         }
@@ -190,7 +195,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
         $form = new enrol_elediamultikeys_enrol_form(NULL, $instance);
         $instanceid = optional_param('instance', 0, PARAM_INT);
 
-        //on any error this shows the form for enrol again
+        // On any error this shows the form for enrol again.
         ob_start();
         $form->display();
         $output = ob_get_clean();
@@ -205,14 +210,15 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
                     $tineend = 0;
                 }
 
-                if($onewaykey = $DB->get_record('eledia_multikeys_keys', array('code' => $data->enrolpassword, 'course' => $instance->courseid))){ //prüfen ob Einwegschlüssel für Kurs in DB
+                if ($onewaykey = $DB->get_record('block_eledia_generate_multikeys',
+                        array('code' => $data->enrolpassword, 'course' => $instance->courseid))) {
                     if($onewaykey->user){//Schlüssel wurde schon verwendet
                         $output = $OUTPUT->notification(get_string('keyused', 'enrol_elediamultikeys')).$output;
                         return $output;
                     }
                     $cfginfomail = $this->get_config('infomail');
                     $this->enrol_user($instance, $USER->id, $instance->roleid, $timestart, $tineend);
-                    add_to_log($instance->courseid, 'course', 'enrol', '../enrol/users.php?id='.$instance->courseid, $instance->courseid); //there should be userid somewhere!
+                    add_to_log($instance->courseid, 'course', 'enrol', '../enrol/users.php?id='.$instance->courseid, $instance->courseid);
                     if (!empty($cfginfomail)) {
                         $this->send_infomail($cfginfomail,
                                             $data->enrolpassword,
@@ -222,19 +228,18 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
 
                     $onewaykey->user = $USER->id;
                     $onewaykey->timeused = time();
-                    $DB->update_record('eledia_multikeys_keys', $onewaykey);
-                }else{//Schlüssel ungültig
+                    $DB->update_record('block_eledia_generate_multikeys', $onewaykey);
+                }else{// Key invalid.
                     $output = $OUTPUT->notification(get_string('keynotfound', 'enrol_elediamultikeys')).$output;
                     return $output;
                 }
 
-                // send welcome
+                // Send welcome.
                 if ($instance->customint4) {
                     $this->email_welcome_message($instance, $USER);
                 }
             }
         }
-
 
         return $OUTPUT->box($output);
     }
@@ -335,7 +340,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
         }
         $rs->close();
 
-        // now unenrol from course user did not visit for a long time
+        // Now unenrol from course user did not visit for a long time.
         $sql = "SELECT e.*, ue.userid
                   FROM {user_enrolments} ue
                   JOIN {enrol} e ON (e.id = ue.enrolid AND e.enrol = 'elediamultikeys' AND e.customint2 > 0)
@@ -395,7 +400,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
         $message     = get_string('enrolkey_used_text', 'enrol_elediamultikeys', $data);
         $messagehtml = text_to_html($message, false, false, true);
 
-        $user->mailformat = 1;  // Always send HTML version as well
+        $user->mailformat = 1;  // Always send HTML version as well.
 
         $return = email_to_user($recipient, $supportuser, $subject, $message, $messagehtml);
 

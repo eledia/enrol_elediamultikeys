@@ -18,6 +18,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2010090501;
+$plugin->version = 2013042900;
 $plugin->cron    = 180;
-$plugin->dependencies = array('block_eledia_generate_multikeys' => 2010112400);
+$plugin->dependencies = array('block_eledia_generate_multikeys' => 2013042900);
