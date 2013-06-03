@@ -18,7 +18,7 @@
  *
  *
  * @package enrol
- * @category eledia_generate_multikeys
+ * @category eledia_multikeys
  * @copyright 2013 eLeDia GmbH {@link http://www.eledia.de}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -210,7 +210,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
                     $tineend = 0;
                 }
 
-                if ($onewaykey = $DB->get_record('block_eledia_generate_multikeys',
+                if ($onewaykey = $DB->get_record('block_eledia_multikeys',
                         array('code' => $data->enrolpassword, 'course' => $instance->courseid))) {
                     if($onewaykey->user){//Schlüssel wurde schon verwendet
                         $output = $OUTPUT->notification(get_string('keyused', 'enrol_elediamultikeys')).$output;
@@ -228,7 +228,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
 
                     $onewaykey->user = $USER->id;
                     $onewaykey->timeused = time();
-                    $DB->update_record('block_eledia_generate_multikeys', $onewaykey);
+                    $DB->update_record('block_eledia_multikeys', $onewaykey);
                 }else{// Key invalid.
                     $output = $OUTPUT->notification(get_string('keynotfound', 'enrol_elediamultikeys')).$output;
                     return $output;
