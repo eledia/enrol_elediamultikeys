@@ -68,7 +68,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
 
         if (empty($instance->name)) {
             if (!empty($instance->roleid) and $role = $DB->get_record('role', array('id'=>$instance->roleid))) {
-                $role = ' (' . role_get_name($role, get_context_instance(CONTEXT_COURSE, $instance->courseid)) . ')';
+                $role = ' (' . role_get_name($role, context_course::instance($instance->courseid)) . ')';
             } else {
                 $role = '';
             }
@@ -109,7 +109,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
              throw new coding_exception('Invalid enrol instance type!');
         }
 
-        $context = get_context_instance(CONTEXT_COURSE, $instance->courseid);
+        $context = context_course::instance($instance->courseid);
         if (has_capability('enrol/elediamultikeys:config', $context)) {
             $managelink = new moodle_url('/enrol/elediamultikeys/edit.php', array('courseid'=>$instance->courseid, 'id'=>$instance->id));
             $instancesnode->add($this->get_instance_name($instance), $managelink, navigation_node::TYPE_SETTING);
@@ -127,7 +127,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
         if ($instance->enrol !== 'elediamultikeys') {
             throw new coding_exception('invalid enrol instance!');
         }
-        $context = get_context_instance(CONTEXT_COURSE, $instance->courseid);
+        $context = context_course::instance($instance->courseid);
 
         $icons = array();
 
@@ -145,7 +145,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
      * @return moodle_url page url
      */
     public function get_newinstance_link($courseid) {
-        $context = get_context_instance(CONTEXT_COURSE, $courseid, MUST_EXIST);
+        $context = context_course::instance($courseid);
 
         if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/manual:config', $context)) {
             return NULL;
@@ -291,7 +291,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
 
         $subject = get_string('welcometocourse', 'enrol_elediamultikeys', format_string($course->fullname));
 
-        $context = get_context_instance(CONTEXT_COURSE, $course->id);
+        $context = context_course::instance($course->id);
         $rusers = array();
         if (!empty($CFG->coursecontact)) {
             $croles = explode(',', $CFG->coursecontact);
