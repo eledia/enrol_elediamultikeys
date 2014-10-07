@@ -218,7 +218,6 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
                     }
                     $cfginfomail = $this->get_config('infomail');
                     $this->enrol_user($instance, $USER->id, $instance->roleid, $timestart, $tineend);
-                    add_to_log($instance->courseid, 'course', 'enrol', '../enrol/users.php?id='.$instance->courseid, $instance->courseid);
                     if (!empty($cfginfomail)) {
                         $this->send_infomail($cfginfomail,
                                             $data->enrolpassword,
@@ -394,7 +393,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
         $recipient->mnethostid  = $CFG->mnet_localhost_id;
         $recipient->email        = $address;
 
-        $supportuser = generate_email_supportuser();
+        $supportuser = core_user::get_support_user();
 
         $subject = get_string('enrolkey_used', 'enrol_elediamultikeys');
         $message     = get_string('enrolkey_used_text', 'enrol_elediamultikeys', $data);

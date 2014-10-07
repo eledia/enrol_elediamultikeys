@@ -23,15 +23,6 @@ if ($ADMIN->fulltree) {
     //--- general settings -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_elediamultikeys_settings', '', get_string('pluginname_desc', 'enrol_elediamultikeys')));
 
-//    $settings->add(new admin_setting_configcheckbox('enrol_elediamultikeys/requirepassword',
-//        get_string('requirepassword', 'enrol_elediamultikeys'), get_string('requirepassword_desc', 'enrol_elediamultikeys'), 0));
-
-//    $settings->add(new admin_setting_configcheckbox('enrol_elediamultikeys/usepasswordpolicy',
-//        get_string('usepasswordpolicy', 'enrol_elediamultikeys'), get_string('usepasswordpolicy_desc', 'enrol_elediamultikeys'), 0));
-
-//    $settings->add(new admin_setting_configcheckbox('enrol_elediamultikeys/showhint',
-//        get_string('showhint', 'enrol_elediamultikeys'), get_string('showhint_desc', 'enrol_elediamultikeys'), 0));
-
     //--- enrol instance defaults ----------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_elediamultikeys_defaults',
         get_string('enrolinstancedefaults', 'admin'), get_string('enrolinstancedefaults_desc', 'admin')));
@@ -43,11 +34,6 @@ if ($ADMIN->fulltree) {
                      ENROL_INSTANCE_DISABLED => get_string('no'));
     $settings->add(new admin_setting_configselect('enrol_elediamultikeys/status',
         get_string('status', 'enrol_elediamultikeys'), get_string('status_desc', 'enrol_elediamultikeys'), ENROL_INSTANCE_DISABLED, $options));
-
-//    $options = array(1  => get_string('yes'),
-//                     0 => get_string('no'));
-//    $settings->add(new admin_setting_configselect('enrol_elediamultikeys/groupkey',
-//        get_string('groupkey', 'enrol_elediamultikeys'), get_string('groupkey_desc', 'enrol_elediamultikeys'), 0, $options));
 
     if (!during_initial_install()) {
         $options = get_default_enrol_roles(context_system::instance());

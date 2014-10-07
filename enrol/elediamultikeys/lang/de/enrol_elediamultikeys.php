@@ -73,7 +73,7 @@ $string['keynotfound'] = 'Kurscode nicht gefunden';
 $string['wrongkey'] = 'Falscher Kurscode für diesen Kurs';
 $string['keyused'] = 'Kurscode wurde bereits verwendet';
 $string['infomail'] = 'E-Mail Adresse für Einschreibe Information';
-$string['infomail_help'] = 'Wenn eine Adresse festgelegt ist wird bei einer Einschreibung eine E-Mail an diese adresse geschickt.';
+$string['infomail_help'] = 'Wenn eine Adresse festgelegt ist wird bei einer Einschreibung eine E-Mail an diese Adresse geschickt.';
 $string['enrolkey_used'] = 'Einschreibschlüssel wurde verwendet';
 $string['enrolkey_used_text'] = 'Ein Einschreibeschlüssel wurde verwendet:
 Schlüssel: {$a->key}
