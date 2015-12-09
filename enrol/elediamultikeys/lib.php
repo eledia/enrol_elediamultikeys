@@ -205,19 +205,31 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
                 $enrol = enrol_get_plugin('elediamultikeys');
                 $timestart = time();
                 if ($instance->enrolperiod) {
-                    $tineend = $timestart + $instance->enrolperiod;
+                    $timeend = $timestart + $instance->enrolperiod;
                 } else {
-                    $tineend = 0;
+                    $timeend = 0;
                 }
 
                 if ($onewaykey = $DB->get_record('block_eledia_multikeys',
-                        array('code' => $data->enrolpassword, 'course' => $instance->courseid))) {
-                    if($onewaykey->user){//Schlüssel wurde schon verwendet
+                        array('code' => $data->enrolpassword))) {
+
+                    if ($onewaykey->enrolid != $instance->id) {
+                        $output = $OUTPUT->notification(get_string('passwordinvalid', 'enrol_elediamultikeys')).$output;
+                        return $output;
+                    }
+
+                    if ($onewaykey->user) {// Key already used.
                         $output = $OUTPUT->notification(get_string('keyused', 'enrol_elediamultikeys')).$output;
                         return $output;
                     }
+
+                    // Use key enrol duration if set.
+                    if (!empty($onewaykey->enrol_duration)) {
+                        $timeend = $timestart + ($onewaykey->enrol_duration * 24 * 60 * 60);
+                    }
+
                     $cfginfomail = $this->get_config('infomail');
-                    $this->enrol_user($instance, $USER->id, $instance->roleid, $timestart, $tineend);
+                    $this->enrol_user($instance, $USER->id, $instance->roleid, $timestart, $timeend);
                     if (!empty($cfginfomail)) {
                         $this->send_infomail($cfginfomail,
                                             $data->enrolpassword,
@@ -401,8 +413,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
 
         $user->mailformat = 1;  // Always send HTML version as well.
 
-        $return = email_to_user($recipient, $supportuser, $subject, $message, $messagehtml);
-
+        return email_to_user($recipient, $supportuser, $subject, $message, $messagehtml);
     }
 }
 

@@ -57,12 +57,11 @@ if ($mform->is_cancelled()) {
     if ($instance->id) {
         $instance->status         = $data->status;
         $instance->name           = $data->name;
-//        $instance->password       = $data->password;
-//        $instance->customint1     = $data->customint1;
         $instance->customint2     = $data->customint2;
         $instance->customint3     = $data->customint3;
         $instance->customint4     = $data->customint4;
         $instance->customtext1    = $data->customtext1;
+        $instance->customchar1    = $data->customchar1;
         $instance->roleid         = $data->roleid;
         $instance->enrolperiod    = $data->enrolperiod;
         $instance->enrolstartdate = $data->enrolstartdate;

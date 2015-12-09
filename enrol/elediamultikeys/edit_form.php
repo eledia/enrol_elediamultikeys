@@ -38,18 +38,6 @@ class enrol_elediamultikeys_edit_form extends moodleform {
         $mform->addHelpButton('status', 'status', 'enrol_elediamultikeys');
         $mform->setDefault('status', $plugin->get_config('status'));
 
-//        $mform->addElement('passwordunmask', 'password', get_string('password', 'enrol_elediamultikeys'));
-//        $mform->addHelpButton('password', 'password', 'enrol_elediamultikeys');
-//        if (empty($instance->id) and $plugin->get_config('requirepassword')) {
-//            $mform->addRule('password', get_string('required'), 'required', null, 'client');
-//        }
-
-//        $options = array(1 => get_string('yes'),
-//                         0 => get_string('no'));
-//        $mform->addElement('select', 'customint1', get_string('groupkey', 'enrol_elediamultikeys'), $options);
-//        $mform->addHelpButton('customint1', 'groupkey', 'enrol_elediamultikeys');
-//        $mform->setDefault('customint1', $plugin->get_config('groupkey'));
-
         if ($instance->id) {
             $roles = get_default_enrol_roles($context, $instance->roleid);
         } else {
@@ -97,7 +85,6 @@ class enrol_elediamultikeys_edit_form extends moodleform {
         $mform->addElement('advcheckbox', 'customint4', get_string('sendcoursewelcomemessage', 'enrol_elediamultikeys'));
         $mform->setDefault('customint4', $plugin->get_config('sendcoursewelcomemessage'));
         $mform->addHelpButton('customint4', 'sendcoursewelcomemessage', 'enrol_elediamultikeys');
-        $mform->setType('name', PARAM_INT);
 
         $mform->addElement('textarea', 'customtext1', get_string('customwelcomemessage', 'enrol_elediamultikeys'), array('cols'=>'60', 'rows'=>'8'));
         $mform->setType('customtext1', PARAM_RAW);
@@ -117,33 +104,8 @@ class enrol_elediamultikeys_edit_form extends moodleform {
         $errors = parent::validation($data, $files);
 
         list($instance, $plugin, $context) = $this->_customdata;
-//        $checkpassword = false;
         $checkpassword = true;
-//        if ($instance->id) {
-//            if ($data['status'] == ENROL_INSTANCE_ENABLED) {
-//                if ($instance->password !== $data['password']) {
-//                    $checkpassword = true;
-//                }
-//            }
-//        }
-//        else {
-//            if ($data['status'] == ENROL_INSTANCE_ENABLED) {
-//                $checkpassword = true;
-//            }
-//        }
 
-//        if ($checkpassword) {
-//            $require = $plugin->get_config('requirepassword');
-//            $policy  = $plugin->get_config('usepasswordpolicy');
-//            if ($require and trim($data['password']) === '') {
-//                $errors['password'] = get_string('required');
-//            } else if ($policy) {
-//                $errmsg = '';//prevent eclipse warning
-//                if (!check_password_policy($data['password'], $errmsg)) {
-//                    $errors['password'] = $errmsg;
-//                }
-//            }
-//        }
 
         if ($data['status'] == ENROL_INSTANCE_ENABLED) {
             if (!empty($data['enrolenddate']) and $data['enrolenddate'] < $data['enrolstartdate']) {

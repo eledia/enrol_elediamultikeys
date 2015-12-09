@@ -22,7 +22,7 @@ $string['enrolenddate'] = 'End date';
 $string['enrolenddaterror'] = 'Enrolment end date cannot be earlier than start date';
 $string['enrolme'] = 'Enrol me';
 $string['enrolperiod'] = 'Enrolment period';
-$string['enrolperiod_desc'] = 'Default length of the enrolment period (in seconds).'; //TODO: fixme
+$string['enrolperiod_desc'] = 'Default length of the enrolment period (in seconds).';
 $string['enrolstartdate'] = 'Start date';
 
 $string['longtimenosee'] = 'Unenrol inactive after';
