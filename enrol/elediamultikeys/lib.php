@@ -415,6 +415,38 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
 
         return email_to_user($recipient, $supportuser, $subject, $message, $messagehtml);
     }
+
+    /**
+     * Is it possible to hide/show enrol instance via standard UI?
+     *
+     * @param stdClass $instance
+     * @return bool
+     */
+    public function can_hide_show_instance($instance) {
+        $context = context_course::instance($instance->courseid);
+
+        if (!has_capability('enrol/elediamultikeys:config', $context)) {
+            return false;
+        }
+
+        // If the instance is currently disabled, before it can be enabled,
+        // we must check whether the password meets the password policies.
+        if ($instance->status == ENROL_INSTANCE_DISABLED) {
+            if ($this->get_config('requirepassword')) {
+                if (empty($instance->password)) {
+                    return false;
+                }
+            }
+            // Only check the password if it is set.
+            if (!empty($instance->password) && $this->get_config('usepasswordpolicy')) {
+                if (!check_password_policy($instance->password, $errmsg)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
 
 /**
@@ -430,3 +462,5 @@ function enrol_elediamultikeys_supports($feature) {
         default: return null;
     }
 }
+
+
