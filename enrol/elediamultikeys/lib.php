@@ -237,10 +237,16 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
                                             $USER);
                     }
 
+                    // Save key as used.
                     $onewaykey->user = $USER->id;
                     $onewaykey->timeused = time();
                     $DB->update_record('block_eledia_multikeys', $onewaykey);
-                }else{// Key invalid.
+
+                    // Do group enrolment if needed.
+                    if (!empty($onewaykey->groupid)) {
+                        groups_add_member($onewaykey->groupid, $onewaykey->user);
+                    }
+                } else {// Key invalid.
                     $output = $OUTPUT->notification(get_string('keynotfound', 'enrol_elediamultikeys')).$output;
                     return $output;
                 }
