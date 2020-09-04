@@ -218,7 +218,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
                         return $output;
                     }
 
-                    if ($onewaykey->user) {// Key already used.
+                    if ($onewaykey->userid) {// Key already used.
                         $output = $OUTPUT->notification(get_string('keyused', 'enrol_elediamultikeys')).$output;
                         return $output;
                     }
@@ -238,7 +238,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
                     }
 
                     // Save key as used.
-                    $onewaykey->user = $USER->id;
+                    $onewaykey->userid = $USER->id;
                     $onewaykey->timeused = time();
                     $DB->update_record('block_eledia_multikeys', $onewaykey);
 
