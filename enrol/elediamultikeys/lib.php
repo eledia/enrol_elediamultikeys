@@ -453,19 +453,32 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
 
         return true;
     }
-}
 
-/**
- * Indicates API features that the enrol plugin supports.
- *
- * @param string $feature
- * @return mixed True if yes (some features may use other values)
- */
-function enrol_elediamultikeys_supports($feature) {
-    switch($feature) {
-        case ENROL_RESTORE_TYPE: return ENROL_RESTORE_EXACT;
 
-        default: return null;
+    /**
+     * Is it possible to delete enrol instance via standard UI?
+     *
+     * @param object $instance
+     * @return bool
+     * @throws coding_exception
+     */
+    public function can_delete_instance($instance) {
+        $context = context_course::instance($instance->courseid);
+        return has_capability('enrol/elediamultikeys:config', $context);
+    }
+
+    /**
+     * Indicates API features that the enrol plugin supports.
+     *
+     * @param string $feature
+     * @return mixed True if yes (some features may use other values)
+     */
+    function enrol_elediamultikeys_supports($feature) {
+        switch($feature) {
+            case ENROL_RESTORE_TYPE: return ENROL_RESTORE_EXACT;
+
+            default: return null;
+        }
     }
 }
 
