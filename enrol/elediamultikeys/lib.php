@@ -160,6 +160,8 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
      *
      * @param stdClass $instance
      * @return string html text, usually a form in a text box
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public function enrol_page_hook(stdClass $instance) {
         global $CFG, $OUTPUT, $SESSION, $USER, $DB;
@@ -172,11 +174,10 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
             return null;
         }
 
-        if ($instance->enrolstartdate != 0 and $instance->enrolstartdate < time()) {
+        if ($instance->enrolstartdate != 0 && $instance->enrolstartdate > time()) {
             return null;
         }
-
-        if ($instance->enrolenddate != 0 and $instance->enrolenddate > time()) {
+        if ($instance->enrolenddate != 0 and $instance->enrolenddate < time()) {
             return null;
         }
 
