@@ -245,7 +245,7 @@ class enrol_elediamultikeys_plugin extends enrol_plugin {
 
                     // Do group enrolment if needed.
                     if (!empty($onewaykey->groupid)) {
-                        groups_add_member($onewaykey->groupid, $onewaykey->user);
+                        groups_add_member($onewaykey->groupid, $onewaykey->userid);
                     }
                 } else {// Key invalid.
                     $output = $OUTPUT->notification(get_string('keynotfound', 'enrol_elediamultikeys')).$output;
